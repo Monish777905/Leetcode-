@@ -1,0 +1,28 @@
+int divide(int dividend, int divisor) {
+  if (divisor==0){
+     return INT_MAX;
+   }
+   if (dividend == INT_MIN && divisor == -1) {
+        return INT_MAX;
+    }
+    if (dividend == INT_MIN && divisor == 1) {
+        return INT_MIN;
+    }
+
+   bool isPositive = (dividend > 0) == (divisor > 0);
+   unsigned long long a = labs((long)dividend);
+   unsigned long  long b = labs((long)divisor);
+   unsigned long long ans = 0;
+   while (a>=b){
+    short q = 0;
+    while(a>=(b<<(q+1))&&(b<<(q+1))>0){
+        q++;
+    }
+    ans+=(1ULL<<q);
+    a-=(b<<q);
+   }
+    if (ans > INT_MAX) {
+        return INT_MAX;
+    }
+   return isPositive ? ans : -ans;
+}
