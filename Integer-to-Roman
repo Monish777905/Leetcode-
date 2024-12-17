@@ -1,0 +1,25 @@
+char* intToRoman(int num)
+{  
+    int arr[]={ 1000,900,500,400,100,90,50,40,10,9,5,4,1};
+    char* brr[]={"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+   
+     static char crr[1000];
+    crr[0]='\0';
+    char* p=crr;
+    int i=0;
+    while(num>0 && i<=13) 
+    {
+        while(num>=arr[i])
+        {
+           strcpy(p,brr[i]);
+           p+=strlen(brr[i]);
+            num-=arr[i]; 
+          
+        }
+         i++;
+         
+         
+    }
+ *p = '\0';
+    return crr;
+}
