@@ -1,0 +1,19 @@
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
+
+int maxArea(int* height, int heightSize){
+    int hi_idx = 0;
+    int max_a = 0;
+    int max_l = 0;
+    int max_r = heightSize - 1;
+    while(max_l < max_r) {
+        int min_hi = MIN(height[max_l],height[max_r]); //find the top of the container (min)
+        max_a = MAX((min_hi * (max_r - max_l)), max_a); // see if this area is greater than last found area
+        if (height[max_l] < height[max_r]){
+               max_l++; //try to find a taller container top
+        } else {
+            max_r--;
+        }
+    }
+    return max_a;
+}
