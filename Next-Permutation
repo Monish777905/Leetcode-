@@ -1,0 +1,32 @@
+void swap(int *a, int *b){
+    int temp=*a;
+    *a=*b;
+    *b=temp;
+}
+void reverse(int *arr,int start, int end){
+    while(start < end){
+        swap(&arr[start],&arr[end]);
+        start++;
+        end--;
+    }
+}
+void nextPermutation(int* nums, int numsSize) {
+int index=-1;
+for(int i = numsSize - 1 ;i > 0 ; i--){
+    if(nums[i-1]<nums[i]){
+        index=i-1;
+        break;
+    }
+}
+    if(index!=-1){
+int swap_index=-1;
+    for(int i=numsSize-1;i>0;i--){
+        if(nums[i]>nums[index]){
+            swap_index=i;
+            break;
+        }
+    }
+    swap(&nums[index],&nums[swap_index]);
+    }
+    reverse(nums,index+1,numsSize-1);
+}
