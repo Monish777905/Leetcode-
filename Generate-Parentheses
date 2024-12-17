@@ -1,0 +1,40 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+
+
+char** generateParenthesis(int n, int* returnSize) {
+    char **par;
+    par = (char **) malloc (1600*sizeof(char *));
+    int x=0;
+
+    void gen(int l,int r,int i,char s[17]){
+    if(l>=0&&r>=0){
+    if(l==0&&r==0){
+        s[i]='\0';
+        par[x] = (char *) malloc ((2*n+1)*sizeof(char));
+        for(int j=0;j<2*n+1;j++){
+            par[x][j]=s[j];
+        }
+        x++;
+    }
+    else if(l==0){
+        s[i]=')';
+        gen(l,r-1,i+1,s);
+    }
+    else{
+        s[i]='(';
+        gen(l-1,r,i+1,s);
+        if(l<r){
+        s[i]=')';
+        gen(l,r-1,i+1,s);
+        }
+    }
+    }
+    }
+    char s[17];
+    gen(n,n,0,s);
+    *returnSize=x;
+    return par;
+
+}
