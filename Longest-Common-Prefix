@@ -1,0 +1,29 @@
+#include <stdlib.h>
+char* longestCommonPrefix(char** strs, int strsSize) {
+   int i = 1;
+   int j = 0;
+   int k = 0;
+   char *s = malloc(strlen(strs[0]) + 1);
+   int flag = 1;// to check if the  letter of all the strings is equal
+    while (strlen(strs[0]) > j) // iterating through the string
+    {
+        flag = 1;
+        i = 1; // we start from second string to compare it to the previous one
+        while (i < strsSize) // iterating through the pointer to strings
+            {
+                if (strs[i][j] != strs[i-1][j]) 
+                    flag = 0; // we will not copy the letter and we will break out of everything
+                i++;
+            }
+            if (flag == 1)
+            {
+                s[k] = strs[i-1][j];
+                k++;
+            }
+            else
+                break;
+            j++;
+    }
+   s[k] = 0; 
+   return s;
+}
