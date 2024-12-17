@@ -1,0 +1,96 @@
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+ void merge(int *nums, int low, int mid, int high) {
+    int temp[high - low + 1];
+    int left = low;
+    int right = mid + 1;
+    int k = 0;
+
+    while (left <= mid && right <= high) {
+        if (nums[left] <= nums[right]) {
+            temp[k] = nums[left];
+            left++;
+        } else {
+            temp[k] = nums[right];
+            right++;
+        }
+        k++;
+    }
+    while (left <= mid) {
+        temp[k] = nums[left];
+        left++;
+        k++;
+    }
+    while (right <= high) {
+        temp[k] = nums[right];
+        right++;
+        k++;
+    }
+    for (int i = 0; i < k; i++) {
+        nums[low + i] = temp[i];
+    }
+}
+
+void mS(int *nums, int low, int high) {
+    if (low < high) {
+        int mid = (low + high) / 2;
+        mS(nums, low, mid);
+        mS(nums, mid + 1, high);
+        merge(nums, low, mid, high);
+    }
+}
+
+int** fourSum(int* nums, int numsSize, int target, int* returnSize, int** returnColumnSizes) {
+    int n=numsSize;
+    mS(nums,0,n-1);
+    int** list=(int**)malloc(n*sizeof(int*));
+     *returnColumnSizes=(int*)malloc(n*sizeof(int));
+    *returnSize=0;
+    int allocatedSize=n;
+    for(int i=0;i<n;i++){
+        if(i>0 && nums[i]==nums[i-1]){
+            continue;
+        }
+        for(int j=i+1;j<n;j++){
+            if(j!=i+1 && nums[j]==nums[j-1]){
+                continue;
+            }
+            int k=j+1;
+            int l=n-1;
+            while(k<l){
+               long long sum = (long long)nums[i] + nums[j] + nums[k] + nums[l];
+                if(sum==target){
+                    if(*returnSize>=allocatedSize){
+                        allocatedSize *=2;
+                        list=(int**)realloc(list,allocatedSize*sizeof(int*));
+                        *returnColumnSizes=(int*)realloc(*returnColumnSizes,allocatedSize*sizeof(int));
+                    }
+                    list[*returnSize]=(int*)malloc(4*sizeof(int));
+                    (*returnColumnSizes)[*returnSize] = 4;
+                list[*returnSize][0] = nums[i]; // Assign values individually
+                list[*returnSize][1] = nums[j];
+                list[*returnSize][2] = nums[k];
+                list[*returnSize][3] = nums[l];
+                (*returnSize)++;
+                k++;
+                l--;
+                while (k < l && nums[k] == nums[k - 1]) k++;
+                    while (k < l && nums[l] == nums[l + 1]) l--;
+                }
+                else if(sum>target){
+                    l--;
+                }
+                else{
+                    k++;
+                }
+            }
+            
+            
+        }
+    }
+    return list;
+    
+}
