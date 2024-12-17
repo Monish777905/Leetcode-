@@ -1,0 +1,36 @@
+char* convert(char* s, int nbr) {
+    if(nbr==1) return s;
+    char* ch = (char*)malloc(sizeof(char)*(strlen(s)+1));
+    ch[strlen(s)] = '\0';
+    int d1 = 0;
+    int d2 = 2*(nbr-1);
+    int i = 1;
+    int j = 0;
+    int c = 0;
+    int alt =1;
+    ch[0] = s[0];
+    for(i;i<strlen(s);i++){
+        if(d1==0){
+            j+=d2;
+        }else if(d2==0){
+             j+=d1;
+        }
+        else{
+            if(alt>0){
+            j+=d2;
+            }else{
+                j+=d1;
+            }alt*=-1;
+        }
+        if(j>=strlen(s)){
+            alt = 1;
+            d1+=2;d2-=2;
+            c++;
+            ch[i] = s[c];
+            j=c; 
+        }else{  
+            ch[i]=s[j];
+        }
+    }
+    return ch;
+}
