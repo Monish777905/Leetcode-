@@ -1,0 +1,44 @@
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+void backtrack(int* candidates, int candidatesSize, int target, int*** result, int** returnColumnSizes, int* tempCombination, int tempSize, int start, int* returnSize) {
+    if (target == 0) { //算到最後所有數都成立
+        (*result)[*returnSize] = (int*)malloc(tempSize * sizeof(int));
+        (*returnColumnSizes)[*returnSize] = tempSize; //回傳尺寸
+        for (int i = 0; i < tempSize; i++) {
+            (*result)[*returnSize][i] = tempCombination[i];
+        }
+        (*returnSize)++;
+        return;
+    }
+
+    for (int i = start; i < candidatesSize; i++) {
+        //當目標值減去候選數後的結果小於0，就會返回上一層遞迴
+        
+        if (candidates[i] <= target) {
+            
+            tempCombination[tempSize] = candidates[i];
+            backtrack(candidates, candidatesSize, target - candidates[i], result, returnColumnSizes, tempCombination, tempSize + 1, i, returnSize);//這邊輸入i作為Start 可以找到multiple times關係
+        }
+    }
+}
+
+int** combinationSum(int* candidates, int candidatesSize, int target, int* returnSize, int** returnColumnSizes) {
+    if (candidates == NULL || candidatesSize == 0) {
+        *returnSize = 0;
+        return NULL;
+    }
+
+    int** result = (int**)malloc(150 * sizeof(int*)); //target is less than 150
+    *returnColumnSizes = (int*)malloc(150 * sizeof(int));
+    *returnSize = 0;
+
+    int* tempCombination = (int*)malloc(target * sizeof(int)); 
+
+    backtrack(candidates, candidatesSize, target, &result, returnColumnSizes, tempCombination, 0, 0, returnSize);
+
+    free(tempCombination);
+    return result;
+}
