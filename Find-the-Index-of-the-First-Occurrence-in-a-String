@@ -1,0 +1,21 @@
+int strStr(char* haystack, char* needle) {
+    int ans = -1;
+    int hl = strlen(haystack);
+    int nl = strlen(needle);
+    int i = 0, j = 0;
+
+    while ( i < hl && j < nl ) {
+        if ( haystack[i] == needle[j] ) {
+            i++;
+            j++;
+        }
+        else {
+            i = i - j + 1;
+            j = 0;
+        }
+    }
+
+    if ( j == nl ) ans = i - nl;
+
+    return ans;
+}
