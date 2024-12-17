@@ -1,0 +1,72 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
+    // Variable that stores boolean: True if current number adds up to a digit
+    // larger or equal to 10.
+    bool carry = false;
+    // Current sum.
+    int currentSum = 0;
+
+    // List that stores the results.
+    struct ListNode* l3 = NULL;
+    // Current node in list 1.
+    struct ListNode* currentNodeL1 = l1;
+    // Curent node in list 2.
+    struct ListNode* currentNodeL2 = l2;
+    // Current node in list 3.
+    struct ListNode* currentNodeL3 = l3;
+
+    // While both lists have more digits to work with.
+    while (true) {
+        // Sum numbers.
+        currentSum = currentNodeL1->val + currentNodeL2->val + carry;
+        // Change my current carry.
+        carry = (currentSum >= 10) ? true : false;
+
+        // Add digit to result list.
+        // Creating node.
+        struct ListNode* node = calloc(1, sizeof(struct ListNode));
+        // Storing result in node.
+        node->val = currentSum % 10;
+
+        // If is head of the list.
+        if (l3 == NULL) {
+            l3 = currentNodeL3 = node;
+        } else {
+        // If the list is not Null, add node to linked list.
+            currentNodeL3 = currentNodeL3->next = node;
+        }
+
+        // If it is the last iteration.
+        if (currentNodeL1->next == NULL && currentNodeL2->next == NULL) {
+            // If carry is true, add an extra digit "1".
+            if (carry) {
+                struct ListNode* node = calloc(1, sizeof(struct ListNode));
+                node->val = 1;
+                currentNodeL3 = currentNodeL3->next = node;
+            }
+            break;
+        } else {
+            // If list 1 still has numbers to process, move to next number.
+            if (currentNodeL1->next != NULL) {
+                currentNodeL1 = currentNodeL1->next;
+            } else {
+                // Change value to 0 and dont move to next.
+                currentNodeL1->val = 0;
+            }
+            // If list 2 still has numbers to process, move to next number.
+            if (currentNodeL2->next != NULL) {
+                currentNodeL2 = currentNodeL2->next;
+            } else {
+                // Change value to 0 and dont move to next.
+                currentNodeL2->val = 0;
+            }
+        }
+    }
+    return l3;
+}
