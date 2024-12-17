@@ -1,0 +1,32 @@
+int lengthOfLongestSubstring(char* s) {
+    if(strlen(s)==0)
+    {
+        return 0;
+    }
+    char* str1 = (char*)malloc(strlen(s) * sizeof(s));
+    int count=0;
+    strcpy(str1, s);
+    for (int k = 0; k < strlen(s); k++) {
+        for(int x=0;x<strlen(s)-k;x++)
+        {
+            str1[x]=s[x+k];
+        }
+        for (int i = 0; str1[i] != '\0'; i++) {
+            for (int j = i + 1; j < strlen(str1); j++) {
+                if (str1[j] == str1[i]) {
+                    str1[j] = '\0';
+                    break;
+                }
+            }
+        }
+        if(count<strlen(str1))
+        {
+            count=strlen(str1);
+        }
+        if(count>=94)
+        {
+           return count;
+        }
+    }
+    return count;
+}
