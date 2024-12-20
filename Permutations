@@ -1,0 +1,50 @@
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes) {
+    int fact(int n){
+        if(n==0||n==1)
+        return 1;
+        return n*fact(n-1);
+    }
+
+    int **ans;
+    int n = fact(numsSize);
+    ans = (int **) malloc (n*sizeof(int *));
+    int t=0;
+
+    int c[numsSize];
+    for(int _=0;_<numsSize;_++)
+    c[_]=0;
+    int f[numsSize];
+    
+    void gen(int i,int x){
+        if(x==numsSize&&t<n){
+            ans[t] = (int *) malloc (numsSize*sizeof(int));
+            for(int _=0;_<numsSize;_++){
+                ans[t][_]=f[_];
+            }
+            t++;
+        }
+        else{
+            for(int y=0;y<numsSize;y++){
+                if(c[y]==0){
+                c[y]=1;
+                f[x]=nums[y];
+                gen((i+y)%numsSize,x+1);
+                c[y]=0;}
+            }
+        }
+    }
+
+    gen(0,0);
+
+    *returnSize = n;
+    *returnColumnSizes=NULL;
+    *returnColumnSizes = (int*) malloc (n*sizeof(int));
+    for(int i=0;i<n;i++)
+        returnColumnSizes[0][i] = numsSize;
+    return ans;
+}
